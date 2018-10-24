@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
-import { Location, Permissions, Notifications } from 'expo';
-import { MapView } from 'expo';
+import React, { Component } from 'react'
+import { Location, Permissions, Notifications } from 'expo'
+import { MapView } from 'expo'
+import { Text, View } from 'react-native'
+
+
+import NavStatus from './component/Nav_Status'
 
 import * as firebase from 'firebase'
 
@@ -127,7 +130,7 @@ export default class App extends Component {
     // (X2 * a2 - X1 * a1) ^ 2
     var power1 = Math.pow((this.state.coord.latitude * latitudeDistance2) - (this.state.real_location.latitude * latitudeDistance1), 2);
     // (Y2 * b2 - Y1 * b1) ^ 2
-    var power2 = Math.pow((this.state.coord.longitude * longitudeDistance2) - (this.state.real_location.longitude * longitudeDistance1), 2);
+    var power2 = Math.pow((this.state.coord.longitude * longitudeDistance2) - วางบั๊ก * (this.state.real_location.longitude * longitudeDistance1), 2);
     let distance = Math.sqrt(power1 + power2);
     this.setState({ distance })
     console.log("Find Distance")
@@ -148,19 +151,12 @@ export default class App extends Component {
     //   </Text>
     // )
     return (
-      <MapView
-        style={{ flex: 1 }}
-        region={{
-          ...this.state.real_location,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
-        }}
-      >
+      <React.Fragment>
         <View
-          style={{
-            height: 100,
-            backgroundColor: `${ this.state.status ? "#467f00" : "#f44242" }`
-          }}
+        style={{
+          height: 100,
+          backgroundColor: `${ this.state.status ? "#467f00" : "#f44242" }`
+        }}
         >
           <Text
             style={{
@@ -172,27 +168,36 @@ export default class App extends Component {
               color: "white",
             }}
           >
-            { this.state.distance }
+            {this.state.distance}
           </Text>
         </View>
-        <MapView.Marker
-          key={1}
-          coordinate={{...this.state.real_location,}}
-          title={"real_location"}
-        />
-        <MapView.Marker
-          key={2}
-          coordinate={{...this.state.coord,}}
-          title={"Coord"}
-        />
-        <MapView.Circle
-          key={3}
-          center={{...this.state.coord,}}
-          radius= { this.state.radius }
-          fillColor="rgba(0, 141, 206, 0.2)"
-          strokeColor="rgba(0, 141, 206, 0.4)"
-        />
-      </MapView>
+        <MapView
+          style={{ flex: 1 }}
+          region={{
+            ...this.state.real_location,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001,
+          }}
+        >
+          <MapView.Marker
+            key={0}
+            coordinate={{...this.state.real_location,}}
+            title={"real_location"}
+          />
+          <MapView.Marker
+            key={1}
+            coordinate={{...this.state.coord,}}
+            title={"Coord"}
+          />
+          <MapView.Circle
+            key={2}
+            center={{...this.state.coord,}}
+            radius= { this.state.radius }
+            fillColor="rgba(0, 141, 206, 0.2)"
+            strokeColor="rgba(0, 141, 206, 0.4)"
+          />
+        </MapView>
+      </React.Fragment>
     );
   }
 }
